@@ -1,0 +1,74 @@
+<h2>Fund Info Strip — mobile layout?</h2>
+<p class="subtitle">The strip with Fund ID, Status, Deposited, Age, etc. currently has 5 columns. On phone it overflows. How should it wrap?</p>
+
+<div class="cards">
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#f5f5f3;border-radius:6px;padding:12px;font-family:sans-serif;">
+        <div style="background:#fff;border:1px solid #e2e2de;border-radius:6px;overflow:hidden;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;">
+            <div style="padding:10px 12px;border-right:1px solid #e2e2de;border-bottom:1px solid #e2e2de;">
+              <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;">Fund</div>
+              <div style="font-size:12px;font-weight:500;">Yelin</div>
+            </div>
+            <div style="padding:10px 12px;border-bottom:1px solid #e2e2de;">
+              <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;">Status</div>
+              <div style="font-size:11px;"><span style="background:#e8f5ee;color:#3a7d52;padding:2px 6px;border-radius:3px;font-size:9px;font-weight:600;">LIVE</span></div>
+            </div>
+            <div style="padding:10px 12px;border-right:1px solid #e2e2de;border-bottom:1px solid #e2e2de;">
+              <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;">Deposited</div>
+              <div style="font-size:12px;font-weight:500;">₪412,600</div>
+            </div>
+            <div style="padding:10px 12px;border-bottom:1px solid #e2e2de;">
+              <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;">Age</div>
+              <div style="font-size:12px;font-weight:500;">17 mo</div>
+            </div>
+            <div style="padding:10px 12px;grid-column:1/-1;">
+              <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;">Gain / Return</div>
+              <div style="font-size:12px;font-weight:500;color:#3a7d52;">+₪73,400 · +18.4%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — 2-column grid</h3>
+      <p>All 5 fields visible in a tidy 2-col grid. Last item spans full width.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#f5f5f3;border-radius:6px;padding:12px;font-family:sans-serif;">
+        <div style="background:#fff;border:1px solid #e2e2de;border-radius:6px;overflow:hidden;">
+          <div style="display:flex;flex-direction:column;">
+            <div style="padding:8px 14px;border-bottom:1px solid #e2e2de;display:flex;justify-content:space-between;align-items:center;">
+              <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.06em;">Fund</div>
+              <div style="font-size:12px;font-weight:500;">Yelin</div>
+            </div>
+            <div style="padding:8px 14px;border-bottom:1px solid #e2e2de;display:flex;justify-content:space-between;align-items:center;">
+              <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.06em;">Status</div>
+              <span style="background:#e8f5ee;color:#3a7d52;padding:2px 6px;border-radius:3px;font-size:9px;font-weight:600;">LIVE</span>
+            </div>
+            <div style="padding:8px 14px;border-bottom:1px solid #e2e2de;display:flex;justify-content:space-between;align-items:center;">
+              <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.06em;">Deposited</div>
+              <div style="font-size:12px;font-weight:500;">₪412,600</div>
+            </div>
+            <div style="padding:8px 14px;border-bottom:1px solid #e2e2de;display:flex;justify-content:space-between;align-items:center;">
+              <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.06em;">Age</div>
+              <div style="font-size:12px;font-weight:500;">17 mo</div>
+            </div>
+            <div style="padding:8px 14px;display:flex;justify-content:space-between;align-items:center;">
+              <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.06em;">Return</div>
+              <div style="font-size:12px;font-weight:500;color:#3a7d52;">+18.4% (+₪73,400)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Label/value rows</h3>
+      <p>Each field is a full-width row with label on left, value on right. Easy to scan.</p>
+    </div>
+  </div>
+</div>

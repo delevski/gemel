@@ -1,0 +1,65 @@
+<h2>Yearly Performance Rows — mobile layout?</h2>
+<p class="subtitle">On desktop: 5 fixed columns per year (label · bar · % · entries · flow). On phone (~375px) those columns cause horizontal scroll. Pick a mobile treatment.</p>
+
+<div style="display:flex;flex-direction:column;gap:24px;max-width:420px;margin:0 auto;">
+
+  <!-- Option A -->
+  <div class="option" data-choice="a" onclick="toggleSelect(this)" style="cursor:pointer;">
+    <div class="letter">A</div>
+    <div class="content" style="flex:1;">
+      <h3>Keep bar, drop secondary columns</h3>
+      <p style="margin-bottom:10px;">Year · bar · % return. Entry count and cash flow disappear on mobile — they're secondary.</p>
+      <div style="background:#f7f7f5;border-radius:8px;padding:12px;border:1px solid #e8e8e4;">
+        <div style="font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:.07em;display:grid;grid-template-columns:44px 1fr 60px;gap:8px;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #e8e8e4;">
+          <span>Year</span><span></span><span style="text-align:right;">Return</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:grid;grid-template-columns:44px 1fr 60px;align-items:center;gap:8px;">
+            <span style="font-size:13px;font-weight:600;">2024</span>
+            <div style="height:8px;background:#e8e8e4;border-radius:3px;overflow:hidden;"><div style="width:78%;height:100%;background:#4d9e6e;border-radius:3px;"></div></div>
+            <span style="font-size:13px;font-weight:600;color:#3a7d52;text-align:right;">+8.4%</span>
+          </div>
+          <div style="display:grid;grid-template-columns:44px 1fr 60px;align-items:center;gap:8px;">
+            <span style="font-size:13px;font-weight:600;">2025</span>
+            <div style="height:8px;background:#e8e8e4;border-radius:3px;overflow:hidden;"><div style="width:48%;height:100%;background:#4d9e6e;border-radius:3px;"></div></div>
+            <span style="font-size:13px;font-weight:600;color:#3a7d52;text-align:right;">+5.1%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option B -->
+  <div class="option" data-choice="b" onclick="toggleSelect(this)" style="cursor:pointer;">
+    <div class="letter">B</div>
+    <div class="content" style="flex:1;">
+      <h3>Two-line layout — nothing hidden</h3>
+      <p style="margin-bottom:10px;">Line 1: year + return. Line 2: bar + entries + flow. All data stays visible.</p>
+      <div style="background:#f7f7f5;border-radius:8px;padding:12px;border:1px solid #e8e8e4;display:flex;flex-direction:column;gap:10px;">
+        <div style="border-bottom:1px solid #e8e8e4;padding-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;">
+            <span style="font-size:14px;font-weight:600;">2024</span>
+            <span style="font-size:14px;font-weight:600;color:#3a7d52;">+8.4%</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:8px;">
+            <div style="height:7px;background:#e8e8e4;border-radius:3px;overflow:hidden;"><div style="width:78%;height:100%;background:#4d9e6e;border-radius:3px;"></div></div>
+            <span style="font-size:10px;color:#aaa;">12 entries</span>
+            <span style="font-size:10px;color:#aaa;">+₪50k</span>
+          </div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;">
+            <span style="font-size:14px;font-weight:600;">2025</span>
+            <span style="font-size:14px;font-weight:600;color:#3a7d52;">+5.1%</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:8px;">
+            <div style="height:7px;background:#e8e8e4;border-radius:3px;overflow:hidden;"><div style="width:48%;height:100%;background:#4d9e6e;border-radius:3px;"></div></div>
+            <span style="font-size:10px;color:#aaa;">5 entries</span>
+            <span style="font-size:10px;color:#aaa;">+₪20k</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,96 @@
+<h2>Mobile KPI Cards — Which layout feels right?</h2>
+<p class="subtitle">The dashboard currently has 6 KPI cards in a row. On phone screens (~375px), how should they stack?</p>
+
+<div class="cards">
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#f5f5f3;border-radius:6px;padding:12px;font-family:sans-serif;font-size:11px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div style="background:#fff;border:1px solid #e2e2de;border-radius:5px;padding:10px;">
+            <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">Total Value</div>
+            <div style="font-size:15px;font-weight:600;">₪486,000</div>
+          </div>
+          <div style="background:#fff;border:1px solid #e2e2de;border-radius:5px;padding:10px;">
+            <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">Return</div>
+            <div style="font-size:15px;font-weight:600;color:#3a7d52;">+18.4%</div>
+          </div>
+          <div style="background:#fff;border:1px solid #e2e2de;border-radius:5px;padding:10px;">
+            <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">Gain</div>
+            <div style="font-size:15px;font-weight:600;color:#3a7d52;">+₪73,400</div>
+          </div>
+          <div style="background:#fff;border:1px solid #e2e2de;border-radius:5px;padding:10px;">
+            <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">Deposited</div>
+            <div style="font-size:15px;font-weight:600;">₪412,600</div>
+          </div>
+          <div style="background:#fff;border:1px solid #e2e2de;border-radius:5px;padding:10px;">
+            <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">YTD</div>
+            <div style="font-size:15px;font-weight:600;color:#3a7d52;">+₪9,240</div>
+          </div>
+          <div style="background:#fff;border:1px solid #e2e2de;border-radius:5px;padding:10px;">
+            <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">Months</div>
+            <div style="font-size:15px;font-weight:600;">17</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — 2-column grid</h3>
+      <p>All 6 cards visible at once in a 2-column layout. Compact, no scrolling needed.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#f5f5f3;border-radius:6px;padding:12px;font-family:sans-serif;font-size:11px;">
+        <div style="display:grid;grid-template-columns:1fr;gap:8px;">
+          <div style="background:#fff;border:1px solid #e2e2de;border-radius:5px;padding:10px;display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.05em;">Total Value</div>
+              <div style="font-size:15px;font-weight:600;">₪486,000</div>
+            </div>
+            <div style="font-size:11px;color:#3a7d52;font-weight:500;">All funds</div>
+          </div>
+          <div style="background:#fff;border:1px solid #e2e2de;border-radius:5px;padding:10px;display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.05em;">Total Return</div>
+              <div style="font-size:15px;font-weight:600;color:#3a7d52;">+18.4%</div>
+            </div>
+            <div style="font-size:11px;color:#3a7d52;font-weight:500;">+₪73,400</div>
+          </div>
+          <div style="background:#fff;border:1px solid #e2e2de;border-radius:5px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center;opacity:0.6;">
+            <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.05em;">+ 4 more…</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Single column, full width</h3>
+      <p>Each card takes the full width. Very readable, but requires more scrolling.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#f5f5f3;border-radius:6px;padding:12px;font-family:sans-serif;font-size:11px;overflow:hidden;">
+        <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;">
+          <div style="background:#fff;border:1px solid #e2e2de;border-radius:5px;padding:10px;min-width:120px;flex-shrink:0;">
+            <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">Total Value</div>
+            <div style="font-size:15px;font-weight:600;">₪486,000</div>
+          </div>
+          <div style="background:#fff;border:1px solid #e2e2de;border-radius:5px;padding:10px;min-width:120px;flex-shrink:0;">
+            <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">Return</div>
+            <div style="font-size:15px;font-weight:600;color:#3a7d52;">+18.4%</div>
+          </div>
+          <div style="background:#fff;border:1px solid #e2e2de;border-radius:5px;padding:10px;min-width:120px;flex-shrink:0;opacity:0.5;">
+            <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">Gain →</div>
+          </div>
+        </div>
+        <div style="font-size:9px;color:#999;text-align:center;margin-top:4px;">← swipe →</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Horizontal scroll (carousel)</h3>
+      <p>Cards scroll horizontally like a shelf. Intentional swipe, not accidental overflow.</p>
+    </div>
+  </div>
+</div>

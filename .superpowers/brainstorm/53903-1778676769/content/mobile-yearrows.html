@@ -1,0 +1,71 @@
+<h2>Yearly Performance Rows — mobile layout?</h2>
+<p class="subtitle">Each year shows: label, progress bar, % gain, entry count, cash flow. The fixed column widths break on phone. How to handle?</p>
+
+<div class="cards">
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#f5f5f3;border-radius:6px;padding:12px;font-family:sans-serif;">
+        <div style="background:#fff;border:1px solid #e2e2de;border-radius:6px;padding:10px 12px;display:flex;flex-direction:column;gap:10px;">
+          <!-- year row -->
+          <div style="display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:10px;">
+            <div style="font-size:13px;font-weight:500;">2024</div>
+            <div style="height:8px;background:#f0f0ee;border-radius:2px;overflow:hidden;">
+              <div style="width:72%;height:100%;background:#4a9a6a;border-radius:2px;"></div>
+            </div>
+            <div style="font-size:13px;font-weight:500;color:#3a7d52;">+8.4%</div>
+          </div>
+          <div style="display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:10px;">
+            <div style="font-size:13px;font-weight:500;">2025</div>
+            <div style="height:8px;background:#f0f0ee;border-radius:2px;overflow:hidden;">
+              <div style="width:45%;height:100%;background:#4a9a6a;border-radius:2px;"></div>
+            </div>
+            <div style="font-size:13px;font-weight:500;color:#3a7d52;">+5.1%</div>
+          </div>
+          <div style="border-top:1px solid #e2e2de;padding-top:8px;display:flex;justify-content:space-between;">
+            <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.06em;">Year</div>
+            <div style="font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.06em;">Return</div>
+          </div>
+          <div style="font-size:9px;color:#aaa;text-align:center;">Entry count &amp; cash flow hidden on mobile</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Simplified: year + bar + return</h3>
+      <p>Keep bar chart and % return. Hide entry count and cash flow columns — they're secondary info.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#f5f5f3;border-radius:6px;padding:12px;font-family:sans-serif;">
+        <div style="background:#fff;border:1px solid #e2e2de;border-radius:6px;padding:10px 12px;display:flex;flex-direction:column;gap:10px;">
+          <!-- year row stacked -->
+          <div style="border-bottom:1px solid #f0f0ee;padding-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+              <div style="font-size:13px;font-weight:500;">2024</div>
+              <div style="font-size:13px;font-weight:500;color:#3a7d52;">+8.4% &nbsp;<span style="color:#aaa;font-weight:400;font-size:11px;">12 entries</span></div>
+            </div>
+            <div style="height:8px;background:#f0f0ee;border-radius:2px;overflow:hidden;margin-bottom:4px;">
+              <div style="width:72%;height:100%;background:#4a9a6a;border-radius:2px;"></div>
+            </div>
+            <div style="font-size:11px;color:#888;text-align:right;">Cash flow: +₪50,000</div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+              <div style="font-size:13px;font-weight:500;">2025</div>
+              <div style="font-size:13px;font-weight:500;color:#3a7d52;">+5.1% &nbsp;<span style="color:#aaa;font-weight:400;font-size:11px;">5 entries</span></div>
+            </div>
+            <div style="height:8px;background:#f0f0ee;border-radius:2px;overflow:hidden;margin-bottom:4px;">
+              <div style="width:45%;height:100%;background:#4a9a6a;border-radius:2px;"></div>
+            </div>
+            <div style="font-size:11px;color:#888;text-align:right;">Cash flow: +₪20,000</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Stacked: all info, 2 lines per year</h3>
+      <p>Keep all data. Each year expands to two lines. More scroll but nothing hidden.</p>
+    </div>
+  </div>
+</div>
