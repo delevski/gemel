@@ -5,7 +5,50 @@ function App() {
     "compareMode": "indexed"
   }/*EDITMODE-END*/);
 
-  const [view, setView] = React.useState("all"); // "all" | fund.id
+  const [view, setView] = React.useState("all");
+  const [funds, setFunds] = React.useState(null);
+  const [portfolio, setPortfolio] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
+
+  React.useEffect(() => {
+    async function load() {
+      try {
+        const url = window.SUPABASE_URL;
+        const key = window.SUPABASE_ANON_KEY;
+        const headers = { apikey: key, Authorization: `Bearer ${key}` };
+        const [fr, er] = await Promise.all([
+          fetch(`${url}/rest/v1/funds?select=*`, { headers }),
+          fetch(`${url}/rest/v1/entries?select=*&order=date`, { headers }),
+        ]);
+        if (!fr.ok || !er.ok) throw new Error(`HTTP ${fr.status}/${er.status}`);
+        const [fundsData, entriesData] = await Promise.all([fr.json(), er.json()]);
+        const built = fundsData.map(f => {
+          const raw = entriesData
+            .filter(e => e.fund_id === f.id)
+            .map(e => ({
+              date: e.date,
+              price: Number(e.price),
+              ...(e.note ? { note: e.note } : {}),
+              ...(e.flow !== null && e.flow !== undefined ? { flow: Number(e.flow) } : {}),
+            }))
+            .sort((a, b) => a.date.localeCompare(b.date));
+          const series = buildSeries(raw);
+          const fund = { id: f.id, name: f.name, short: f.short, hebrew: f.hebrew, accent: f.accent, series };
+          fund.summary = computeSummary(series);
+          return fund;
+        });
+        const port = buildPortfolio(built);
+        setFunds(built);
+        setPortfolio(port);
+      } catch (e) {
+        setError(e.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, []);
 
   const accentMap = {
     "#1f7a4a": "oklch(0.55 0.13 145)",
@@ -14,20 +57,27 @@ function App() {
     "#181818": "oklch(0.22 0.005 85)",
   };
   const defaultAccent = accentMap[t.accent] || t.accent;
-
-  const funds = window.FUNDS;
-  const portfolio = window.PORTFOLIO;
-
   const isAll = view === "all";
-  const fund = isAll ? null : funds.find(f => f.id === view);
-  const accent = isAll ? defaultAccent : fund.accent;
+  const fund = isAll || !funds ? null : funds.find(f => f.id === view);
+  const accent = isAll ? defaultAccent : (fund ? fund.accent : defaultAccent);
 
   React.useEffect(() => {
     document.documentElement.style.setProperty("--accent", accent);
     document.documentElement.dataset.density = t.density;
   }, [accent, t.density]);
 
-  // build date range string
+  if (loading) return (
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", fontFamily: "IBM Plex Mono, monospace", color: "var(--ink-mid)" }}>
+      Loading…
+    </div>
+  );
+
+  if (error) return (
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", fontFamily: "IBM Plex Mono, monospace", color: "var(--loss)" }}>
+      Failed to load: {error}
+    </div>
+  );
+
   const firstDate = portfolio.series[0].date;
   const lastActive = portfolio.series.filter(s => s.price > 0).slice(-1)[0];
   const lastDate = lastActive ? lastActive.date : portfolio.series.slice(-1)[0].date;
