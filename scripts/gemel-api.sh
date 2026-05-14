@@ -15,7 +15,7 @@ BASE="https://sfzkmvxpdllikbinhzhu.supabase.co/rest/v1"
 ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmemttdnhwZGxsaWtiaW5oemh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3Mzg0ODcsImV4cCI6MjA5NDMxNDQ4N30.Lb_WMyXYyqBnImjFx6tVQSOkroOZ4WSV7i4bwj3ji5M"
 SVC="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmemttdnhwZGxsaWtiaW5oemh1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODczODQ4NywiZXhwIjoyMDk0MzE0NDg3fQ.zhtL513TEXUTDPcggnBU33xwblvO5bWH_V1XDoz3pcY"
 
-READ_HEADERS=(-H "apikey: $ANON")
+READ_HEADERS=(-H "apikey: $ANON" -H "Authorization: Bearer $ANON")
 WRITE_HEADERS=(-H "apikey: $SVC" -H "Authorization: Bearer $SVC" -H "Content-Type: application/json" -H "Prefer: resolution=merge-duplicates")
 
 case "$1" in
