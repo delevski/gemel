@@ -104,4 +104,220 @@ function fmtMonthShort(d) {
   return dt.toLocaleString("en-US", { month: "short" }) + " '" + String(dt.getFullYear()).slice(2);
 }
 
-Object.assign(window, { fmtILS, fmtPct, fmtMonth, fmtMonthShort });
+function roundILS(n) {
+  return Math.round(n);
+}
+
+function inflateFallbackFund(def) {
+  let price = def.startPrice;
+  const series = [];
+
+  if (def.startDate) {
+    const startRow = { date: def.startDate, price: roundILS(price) };
+    if (def.startFlow) {
+      startRow.flow = def.startFlow;
+      startRow.note = def.startFlow > 0 ? "deposit" : "withdrawal";
+    }
+    series.push(startRow);
+  }
+
+  (def.timeline || []).forEach(step => {
+    const row = { date: step.date };
+    if (step.flow) {
+      price += step.flow;
+      row.flow = step.flow;
+      row.note = step.flow > 0 ? "deposit" : "withdrawal";
+    }
+    if (step.pct !== null && step.pct !== undefined) {
+      price *= (1 + step.pct);
+    }
+    row.price = roundILS(price);
+    series.push(row);
+  });
+
+  const summary = { ...computeSummary(buildSeries(series)), ...(def.summary || {}) };
+  return {
+    id: def.id,
+    name: def.name,
+    short: def.short,
+    hebrew: def.hebrew,
+    accent: def.accent,
+    series: buildSeries(series),
+    summary,
+  };
+}
+
+function inflateFallbackPortfolio(funds, summary = {}) {
+  const built = buildPortfolio(funds);
+  built.summary = { ...built.summary, ...summary };
+  return built;
+}
+
+const GEMEL_FALLBACK = {
+  funds: [
+    {
+      id: "yelin",
+      name: "Yelin Lapidot",
+      short: "Yelin",
+      hebrew: "ילין לפידות",
+      accent: "#1f7a4a",
+      startDate: "2024-12-01",
+      startPrice: 80988,
+      timeline: [
+        { date: "2025-01-01", pct: 0.0023 },
+        { date: "2025-02-01", pct: 0.0235 },
+        { date: "2025-03-01", pct: -0.0130 },
+        { date: "2025-04-01", pct: -0.0303 },
+        { date: "2025-05-01", pct: 0.0065 },
+        { date: "2025-06-01", pct: 0.0521 },
+        { date: "2025-07-01", pct: 0.0452 },
+        { date: "2025-08-01", pct: 0.0213 },
+        { date: "2025-09-01", flow: 67000 },
+        { date: "2025-10-01", pct: 0.0291 },
+        { date: "2025-11-01", pct: 0.0250 },
+        { date: "2025-12-01", pct: 0.0110 },
+        { date: "2026-01-01", pct: 0.0134 },
+        { date: "2026-02-01", pct: 0.0273 },
+        { date: "2026-03-01", pct: 0.0065 },
+        { date: "2026-04-01", pct: -0.0463 },
+        { date: "2026-05-01", pct: 0.0808 },
+      ],
+      summary: {
+        currentValue: 180702,
+        isClosed: true,
+        finalValueBeforeClose: 180702,
+        totalDeposited: 146300,
+        totalWithdrawn: 180702,
+        totalProfit: 34402,
+        totalReturn: 23.51,
+        annualized: 16.08,
+        peak: 180702,
+        peakDate: "2026-05-01",
+        months: 17,
+        gains: 14,
+        losses: 3,
+        bestMonth: { date: "2026-05-01", pct: 8.08 },
+        worstMonth: { date: "2025-04-01", pct: -3.03 },
+      },
+    },
+    {
+      id: "mor",
+      name: "Mor",
+      short: "Mor",
+      hebrew: "מור",
+      accent: "#2a5fb8",
+      startDate: "2025-01-01",
+      startPrice: 81000,
+      startFlow: 81000,
+      timeline: [
+        { date: "2025-02-01", pct: 0.0226 },
+        { date: "2025-03-01", pct: -0.0147 },
+        { date: "2025-04-01", pct: 0.0066 },
+        { date: "2025-05-01", pct: 0.0549 },
+        { date: "2025-06-01", pct: 0.0451 },
+        { date: "2025-07-01", pct: 0.0193 },
+        { date: "2025-08-01", pct: 0.0069 },
+        { date: "2025-09-01", pct: 0.0343 },
+        { date: "2025-10-01", pct: 0.0214 },
+        { date: "2025-11-01", pct: 0.0136 },
+        { date: "2025-12-01", pct: 0.0128 },
+        { date: "2026-01-01", pct: 0.0454 },
+        { date: "2026-02-01", pct: 0.0120 },
+        { date: "2026-03-01", pct: 0.0 },
+        { date: "2026-04-01", pct: 0.0319 },
+      ],
+      summary: {
+        currentValue: 110063,
+        isClosed: true,
+        finalValueBeforeClose: 110063,
+        totalDeposited: 81000,
+        totalWithdrawn: 110063,
+        totalProfit: 29063,
+        totalReturn: 35.88,
+        annualized: 27.80,
+        peak: 110063,
+        peakDate: "2026-04-01",
+        months: 15,
+        gains: 13,
+        losses: 1,
+        bestMonth: { date: "2025-05-01", pct: 5.49 },
+        worstMonth: { date: "2025-03-01", pct: -1.47 },
+      },
+    },
+    {
+      id: "analyst",
+      name: "Analyst",
+      short: "Analyst",
+      hebrew: "אנליסט",
+      accent: "#a04a1b",
+      startDate: "2024-12-01",
+      startPrice: 79747,
+      timeline: [
+        { date: "2025-01-01", pct: 0.0038 },
+        { date: "2025-02-01", pct: 0.0304 },
+        { date: "2025-03-01", pct: -0.0169 },
+        { date: "2025-04-01", pct: -0.0325 },
+        { date: "2025-05-01", pct: -0.0012 },
+        { date: "2025-06-01", pct: 0.0513 },
+        { date: "2025-07-01", pct: 0.0531 },
+        { date: "2025-08-01", pct: 0.0201 },
+        { date: "2025-09-01", pct: 0.0088 },
+        { date: "2025-10-01", pct: 0.0342 },
+        { date: "2025-11-01", pct: 0.0202 },
+        { date: "2025-12-01", pct: 0.0083 },
+        { date: "2026-01-01", pct: 0.0092 },
+        { date: "2026-02-01", flow: 86000 },
+        { date: "2026-03-01", pct: 0.0017 },
+        { date: "2026-04-01", pct: -0.0423 },
+        { date: "2026-05-01", pct: 0.0874 },
+      ],
+      summary: {
+        currentValue: 189702,
+        isClosed: true,
+        finalValueBeforeClose: 189702,
+        totalDeposited: 165781,
+        totalWithdrawn: 189702,
+        totalProfit: 23921,
+        totalReturn: 14.43,
+        annualized: 9.98,
+        peak: 189702,
+        peakDate: "2026-05-01",
+        months: 17,
+        gains: 12,
+        losses: 5,
+        bestMonth: { date: "2026-05-01", pct: 8.74 },
+        worstMonth: { date: "2025-04-01", pct: -3.25 },
+      },
+    },
+  ],
+  portfolio: {
+    summary: {
+      currentValue: 480467,
+      isClosed: true,
+      finalValueBeforeClose: 480467,
+      totalDeposited: 393081,
+      totalWithdrawn: 480467,
+      totalProfit: 87386,
+      totalReturn: 22.23,
+      annualized: 0,
+      peak: 480467,
+      peakDate: "2026-05-01",
+      months: 17,
+      gains: 39,
+      losses: 9,
+      bestMonth: { date: "2026-05-01", pct: 8.74 },
+      worstMonth: { date: "2025-04-01", pct: -4.63 },
+    },
+  },
+};
+
+Object.assign(window, {
+  fmtILS,
+  fmtPct,
+  fmtMonth,
+  fmtMonthShort,
+  roundILS,
+  inflateFallbackFund,
+  inflateFallbackPortfolio,
+  GEMEL_FALLBACK,
+});

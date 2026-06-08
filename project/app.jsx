@@ -9,9 +9,59 @@ function App() {
   const [funds, setFunds] = React.useState(null);
   const [portfolio, setPortfolio] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState(null);
+  const [source, setSource] = React.useState("loading");
 
   React.useEffect(() => {
+    let cancelled = false;
+
+    function buildFromApi(fundsData, entriesData) {
+      const built = fundsData.map(f => {
+        const raw = entriesData
+          .filter(e => e.fund_id === f.id)
+          .map(e => ({
+            date: e.date,
+            price: Number(e.price),
+            ...(e.note ? { note: e.note } : {}),
+            ...(e.flow !== null && e.flow !== undefined ? { flow: Number(e.flow) } : {}),
+          }))
+          .sort((a, b) => a.date.localeCompare(b.date));
+        const series = buildSeries(raw);
+        const fund = { id: f.id, name: f.name, short: f.short, hebrew: f.hebrew, accent: f.accent, series };
+        fund.summary = computeSummary(series);
+        return fund;
+      });
+      return { funds: built, portfolio: buildPortfolio(built) };
+    }
+
+    function readCache() {
+      try {
+        const cached = window.localStorage?.getItem("gemel_live_cache_v1");
+        if (!cached) return null;
+        const parsed = JSON.parse(cached);
+        if (!parsed?.fundsData || !parsed?.entriesData) return null;
+        return buildFromApi(parsed.fundsData, parsed.entriesData);
+      } catch {
+        return null;
+      }
+    }
+
+    function writeCache(fundsData, entriesData) {
+      try {
+        window.localStorage?.setItem(
+          "gemel_live_cache_v1",
+          JSON.stringify({ fundsData, entriesData, savedAt: Date.now() })
+        );
+      } catch {
+        // ignore storage failures
+      }
+    }
+
+    function buildFallback() {
+      const funds = window.GEMEL_FALLBACK.funds.map(def => window.inflateFallbackFund(def));
+      const portfolio = window.inflateFallbackPortfolio(funds, window.GEMEL_FALLBACK.portfolio.summary);
+      return { funds, portfolio };
+    }
+
     async function load() {
       try {
         const url = window.SUPABASE_URL;
@@ -23,31 +73,29 @@ function App() {
         ]);
         if (!fr.ok || !er.ok) throw new Error(`HTTP ${fr.status}/${er.status}`);
         const [fundsData, entriesData] = await Promise.all([fr.json(), er.json()]);
-        const built = fundsData.map(f => {
-          const raw = entriesData
-            .filter(e => e.fund_id === f.id)
-            .map(e => ({
-              date: e.date,
-              price: Number(e.price),
-              ...(e.note ? { note: e.note } : {}),
-              ...(e.flow !== null && e.flow !== undefined ? { flow: Number(e.flow) } : {}),
-            }))
-            .sort((a, b) => a.date.localeCompare(b.date));
-          const series = buildSeries(raw);
-          const fund = { id: f.id, name: f.name, short: f.short, hebrew: f.hebrew, accent: f.accent, series };
-          fund.summary = computeSummary(series);
-          return fund;
-        });
-        const port = buildPortfolio(built);
-        setFunds(built);
-        setPortfolio(port);
+        writeCache(fundsData, entriesData);
+        if (cancelled) return;
+        const built = buildFromApi(fundsData, entriesData);
+        setFunds(built.funds);
+        setPortfolio(built.portfolio);
+        setSource("live");
       } catch (e) {
-        setError(e.message);
+        const cached = readCache();
+        const built = cached || buildFallback();
+        if (!cancelled) {
+          setFunds(built.funds);
+          setPortfolio(built.portfolio);
+          setSource(cached ? "cached" : "fallback");
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     }
+
     load();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const accentMap = {
@@ -72,12 +120,6 @@ function App() {
     </div>
   );
 
-  if (error) return (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", fontFamily: "IBM Plex Mono, monospace", color: "var(--loss)" }}>
-      Failed to load: {error}
-    </div>
-  );
-
   const firstDate = portfolio.series[0].date;
   const lastActive = portfolio.series.filter(s => s.price > 0).slice(-1)[0];
   const lastDate = lastActive ? lastActive.date : portfolio.series.slice(-1)[0].date;
@@ -93,8 +135,10 @@ function App() {
           </div>
         </div>
         <div className="topbar-right">
-          <span className="status-dot" data-state="closed"></span>
-          <span className="status-label">All closed Jun 2026</span>
+          <span className="status-dot" data-state={source === "live" ? "live" : "closed"}></span>
+          <span className="status-label">
+            {source === "live" ? "Live data" : source === "cached" ? "Cached data" : "Offline fallback"}
+          </span>
           <span className="divider"></span>
           <span className="mono dim">ILS · ₪</span>
         </div>
