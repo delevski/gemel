@@ -185,9 +185,9 @@ const GEMEL_FALLBACK = {
       summary: {
         currentValue: 180702,
         isClosed: true,
-        finalValueBeforeClose: 180702,
+        finalValueBeforeClose: 186781,
         totalDeposited: 146300,
-        totalWithdrawn: 180702,
+        totalWithdrawn: 186781,
         totalProfit: 34402,
         totalReturn: 23.51,
         annualized: 16.08,
@@ -294,9 +294,9 @@ const GEMEL_FALLBACK = {
     summary: {
       currentValue: 480467,
       isClosed: true,
-      finalValueBeforeClose: 480467,
+      finalValueBeforeClose: 486546,
       totalDeposited: 393081,
-      totalWithdrawn: 480467,
+      totalWithdrawn: 486546,
       totalProfit: 87386,
       totalReturn: 22.23,
       annualized: 0,
