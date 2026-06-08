@@ -151,7 +151,7 @@ function App() {
         : <FundView fund={fund} accent={accent} />}
 
       <footer className="footer">
-        <div>{portfolio.series.length} months · 3 funds · last activity {fmtMonth(lastDate)}</div>
+        <div>{portfolio.series.length} months · {funds.length} funds · last activity {fmtMonth(lastDate)}</div>
         <div className="dim">All amounts in Israeli shekel (₪)</div>
       </footer>
       <Tweaks t={t} setTweak={setTweak} />

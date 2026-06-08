@@ -53,12 +53,17 @@ function computeSummary(series) {
 
 function buildPortfolio(funds) {
   const allDates = Array.from(new Set(funds.flatMap(f => f.series.map(r => r.date)))).sort();
+  const latestByFund = new Map(funds.map(f => [f.id, null]));
+  const rowsByFund = new Map(funds.map(f => [f.id, new Map(f.series.map(r => [r.date, r]))]));
+
   const series = allDates.map(date => {
     let price = 0, profit = 0, flow = 0;
     funds.forEach(f => {
-      const row = f.series.find(r => r.date === date);
+      const row = rowsByFund.get(f.id).get(date);
+      if (row) latestByFund.set(f.id, row);
+      const current = latestByFund.get(f.id);
+      if (current) price += current.price;
       if (row) {
-        price += row.price;
         profit += row.profit || 0;
         flow += row.flow || 0;
       }
@@ -66,6 +71,7 @@ function buildPortfolio(funds) {
     const note = flow > 0 ? "deposit" : flow < 0 ? "withdrawal" : null;
     return { date, price, profit, flow, note, pct: null };
   });
+
   let prev = null;
   series.forEach(r => {
     if (prev !== null && r.price > 0) {
@@ -76,6 +82,7 @@ function buildPortfolio(funds) {
     }
     prev = r.price === 0 ? prev : r.price;
   });
+
   return { id: "all", name: "All funds", short: "Portfolio", hebrew: "כל הקרנות",
            accent: "oklch(0.22 0.005 85)", series, summary: computeSummary(series) };
 }
@@ -289,26 +296,35 @@ const GEMEL_FALLBACK = {
         worstMonth: { date: "2025-04-01", pct: -3.25 },
       },
     },
-  ],
-  portfolio: {
-    summary: {
-      currentValue: 480467,
-      isClosed: true,
-      finalValueBeforeClose: 486546,
-      totalDeposited: 393081,
-      totalWithdrawn: 486546,
-      totalProfit: 87386,
-      totalReturn: 22.23,
-      annualized: 0,
-      peak: 480467,
-      peakDate: "2026-05-01",
-      months: 17,
-      gains: 39,
-      losses: 9,
-      bestMonth: { date: "2026-05-01", pct: 8.74 },
-      worstMonth: { date: "2025-04-01", pct: -4.63 },
+    {
+      id: "mor-kids",
+      name: "Mor (Kids)",
+      short: "Mor Kids",
+      hebrew: "מור (ילדים)",
+      accent: "#a34ac8",
+      startDate: "2026-06-08",
+      startPrice: 109290,
+      startFlow: 109290,
+      summary: {
+        currentValue: 109290,
+        isClosed: false,
+        finalValueBeforeClose: 109290,
+        totalDeposited: 109290,
+        totalWithdrawn: 0,
+        totalProfit: 0,
+        totalReturn: 0,
+        annualized: 0,
+        peak: 109290,
+        peakDate: "2026-06-08",
+        months: 0,
+        gains: 0,
+        losses: 0,
+        bestMonth: null,
+        worstMonth: null,
+      },
     },
-  },
+  ],
+  portfolio: {},
 };
 
 Object.assign(window, {
