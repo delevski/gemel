@@ -83,8 +83,29 @@ function buildPortfolio(funds) {
     prev = r.price === 0 ? prev : r.price;
   });
 
+  const summary = computeSummary(series);
+  const totals = funds.reduce((acc, f) => {
+    const s = f.summary || {};
+    acc.currentValue += s.currentValue ?? s.finalValueBeforeClose ?? 0;
+    acc.finalValueBeforeClose += s.finalValueBeforeClose ?? s.currentValue ?? 0;
+    acc.totalDeposited += s.totalDeposited ?? 0;
+    acc.totalWithdrawn += s.totalWithdrawn ?? 0;
+    acc.totalProfit += s.totalProfit ?? 0;
+    acc.isClosed = acc.isClosed && !!s.isClosed;
+    return acc;
+  }, { currentValue: 0, finalValueBeforeClose: 0, totalDeposited: 0, totalWithdrawn: 0, totalProfit: 0, isClosed: true });
+  summary.currentValue = totals.currentValue;
+  summary.finalValueBeforeClose = totals.finalValueBeforeClose;
+  summary.totalDeposited = totals.totalDeposited;
+  summary.totalWithdrawn = totals.totalWithdrawn;
+  summary.totalProfit = totals.totalProfit;
+  summary.totalReturn = summary.totalDeposited > 0 ? (summary.totalProfit / summary.totalDeposited) * 100 : 0;
+  summary.annualized = summary.totalDeposited > 0 && summary.months > 0
+    ? (Math.pow(1 + summary.totalProfit / summary.totalDeposited, 12 / summary.months) - 1) * 100
+    : 0;
+  summary.isClosed = totals.isClosed;
   return { id: "all", name: "All funds", short: "Portfolio", hebrew: "כל הקרנות",
-           accent: "oklch(0.22 0.005 85)", series, summary: computeSummary(series) };
+           accent: "oklch(0.22 0.005 85)", series, summary };
 }
 
 function fmtILS(n, opts = {}) {
@@ -188,23 +209,25 @@ const GEMEL_FALLBACK = {
         { date: "2026-03-01", pct: 0.0065 },
         { date: "2026-04-01", pct: -0.0463 },
         { date: "2026-05-01", pct: 0.0808 },
+        { date: "2026-06-01", pct: 0.033646742408730335 },
+        { date: "2026-07-01", pct: -0.02568783762802429 },
       ],
       summary: {
-        currentValue: 180702,
         isClosed: true,
-        finalValueBeforeClose: 186781,
+        finalValueBeforeClose: 181983,
         totalDeposited: 146300,
-        totalWithdrawn: 186781,
-        totalProfit: 34402,
-        totalReturn: 23.51,
-        annualized: 16.08,
-        peak: 180702,
-        peakDate: "2026-05-01",
-        months: 17,
+        totalWithdrawn: 181983,
+        totalProfit: 35683,
+        totalReturn: 24.39,
+        annualized: 15.66,
+        peak: 186781,
+        peakDate: "2026-06-01",
+        months: 18,
         gains: 14,
-        losses: 3,
+        losses: 4,
         bestMonth: { date: "2026-05-01", pct: 8.08 },
         worstMonth: { date: "2025-04-01", pct: -3.03 },
+        closedDate: "2026-07-01",
       },
     },
     {
@@ -232,23 +255,26 @@ const GEMEL_FALLBACK = {
         { date: "2026-02-01", pct: 0.0120 },
         { date: "2026-03-01", pct: 0.0 },
         { date: "2026-04-01", pct: 0.0319 },
+        { date: "2026-05-01", pct: 0.00008177803623676816 },
+        { date: "2026-06-01", pct: 0.03207254027238937 },
+        { date: "2026-07-01", pct: -0.02252779660718529 },
       ],
       summary: {
-        currentValue: 110063,
         isClosed: true,
-        finalValueBeforeClose: 110063,
+        finalValueBeforeClose: 111034,
         totalDeposited: 81000,
-        totalWithdrawn: 110063,
-        totalProfit: 29063,
-        totalReturn: 35.88,
-        annualized: 27.80,
-        peak: 110063,
-        peakDate: "2026-04-01",
-        months: 15,
-        gains: 13,
-        losses: 1,
+        totalWithdrawn: 111034,
+        totalProfit: 30034,
+        totalReturn: 37.08,
+        annualized: 23.40,
+        peak: 113593,
+        peakDate: "2026-06-01",
+        months: 18,
+        gains: 15,
+        losses: 2,
         bestMonth: { date: "2025-05-01", pct: 5.49 },
         worstMonth: { date: "2025-03-01", pct: -1.47 },
+        closedDate: "2026-07-01",
       },
     },
     {
@@ -277,23 +303,25 @@ const GEMEL_FALLBACK = {
         { date: "2026-03-01", pct: 0.0017 },
         { date: "2026-04-01", pct: -0.0423 },
         { date: "2026-05-01", pct: 0.0874 },
+        { date: "2026-06-01", pct: 0.04012609250297827 },
+        { date: "2026-07-01", pct: -0.026166414952816353 },
       ],
       summary: {
-        currentValue: 189702,
         isClosed: true,
-        finalValueBeforeClose: 189702,
+        finalValueBeforeClose: 192151,
         totalDeposited: 165781,
-        totalWithdrawn: 189702,
-        totalProfit: 23921,
-        totalReturn: 14.43,
-        annualized: 9.98,
-        peak: 189702,
-        peakDate: "2026-05-01",
-        months: 17,
+        totalWithdrawn: 192151,
+        totalProfit: 26370,
+        totalReturn: 15.91,
+        annualized: 10.34,
+        peak: 197314,
+        peakDate: "2026-06-01",
+        months: 18,
         gains: 12,
-        losses: 5,
+        losses: 6,
         bestMonth: { date: "2026-05-01", pct: 8.74 },
         worstMonth: { date: "2025-04-01", pct: -3.25 },
+        closedDate: "2026-07-01",
       },
     },
     {
@@ -305,22 +333,25 @@ const GEMEL_FALLBACK = {
       startDate: "2026-06-08",
       startPrice: 109290,
       startFlow: 109290,
+      timeline: [
+        { date: "2026-07-01", pct: -0.022536371122701016 },
+      ],
       summary: {
-        currentValue: 109290,
         isClosed: false,
-        finalValueBeforeClose: 109290,
+        finalValueBeforeClose: 106827,
+        currentValue: 106827,
         totalDeposited: 109290,
         totalWithdrawn: 0,
-        totalProfit: 0,
-        totalReturn: 0,
-        annualized: 0,
+        totalProfit: -2463,
+        totalReturn: -2.25,
+        annualized: -23.93,
         peak: 109290,
         peakDate: "2026-06-08",
-        months: 0,
+        months: 1,
         gains: 0,
-        losses: 0,
-        bestMonth: null,
-        worstMonth: null,
+        losses: 1,
+        bestMonth: { date: "2026-07-01", pct: -2.25 },
+        worstMonth: { date: "2026-07-01", pct: -2.25 },
       },
     },
   ],

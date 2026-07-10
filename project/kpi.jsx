@@ -3,7 +3,7 @@ function KPICards({ summary }) {
     {
       label: "Final value",
       value: fmtILS(summary.finalValueBeforeClose),
-      sub: summary.isClosed ? "Withdrawn · " + fmtMonth("2026-06-01") : "Live",
+      sub: summary.isClosed ? "Withdrawn · " + fmtMonth(summary.closedDate || summary.peakDate || "2026-07-01") : "Live",
       mark: summary.isClosed ? "closed" : "live",
     },
     {
