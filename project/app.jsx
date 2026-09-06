@@ -35,7 +35,7 @@ function App() {
 
     function readCache() {
       try {
-        const cached = window.localStorage?.getItem("gemel_live_cache_v5");
+        const cached = window.localStorage?.getItem("gemel_live_cache_v6");
         if (!cached) return null;
         const parsed = JSON.parse(cached);
         if (!parsed?.fundsData || !parsed?.entriesData) return null;
@@ -48,7 +48,7 @@ function App() {
     function writeCache(fundsData, entriesData) {
       try {
         window.localStorage?.setItem(
-          "gemel_live_cache_v5",
+          "gemel_live_cache_v6",
           JSON.stringify({ fundsData, entriesData, savedAt: Date.now() })
         );
       } catch {

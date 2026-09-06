@@ -1,7 +1,8 @@
 INSERT INTO funds (id, name, short, hebrew, accent) VALUES
-  ('yelin',   'Yelin Lapidot', 'Yelin',   'ילין לפידות', 'oklch(0.55 0.13 145)'),
-  ('mor',     'Mor',           'Mor',     'מור',         'oklch(0.55 0.13 250)'),
-  ('analyst', 'Analyst',       'Analyst', 'אנליסט',      'oklch(0.55 0.13 50)');
+  ('yelin',     'Yelin Lapidot', 'Yelin',     'ילין לפידות', 'oklch(0.55 0.13 145)'),
+  ('mor',       'Mor',           'Mor',       'מור',         'oklch(0.55 0.13 250)'),
+  ('mor-kids',  'Mor (Kids)',    'Mor Kids',  'מור (ילדים)', 'oklch(0.55 0.13 295)'),
+  ('analyst',   'Analyst',       'Analyst',   'אנליסט',      'oklch(0.55 0.13 50)');
 
 INSERT INTO entries (fund_id, date, price, note, flow) VALUES
 -- Yelin (19 rows)
@@ -23,7 +24,7 @@ INSERT INTO entries (fund_id, date, price, note, flow) VALUES
 ('yelin', '2026-03-01', 175299, NULL, NULL),
 ('yelin', '2026-04-01', 167191, NULL, NULL),
 ('yelin', '2026-05-01', 180702, NULL, NULL),
-('yelin', '2026-06-01', 0,      'withdrawal', -180702),
+('yelin', '2026-09-01', 184535, NULL, NULL),
 -- Mor (17 rows)
 ('mor', '2025-01-01', 81000,  'deposit',    81000),
 ('mor', '2025-02-01', 82834,  NULL, NULL),
@@ -41,7 +42,9 @@ INSERT INTO entries (fund_id, date, price, note, flow) VALUES
 ('mor', '2026-02-01', 106665, NULL, NULL),
 ('mor', '2026-03-01', 106665, NULL, NULL),
 ('mor', '2026-04-01', 110063, NULL, NULL),
-('mor', '2026-05-01', 0,      'withdrawal', -110063),
+('mor', '2026-09-01', 113536, NULL, NULL),
+-- Mor (Kids) (1 row)
+('mor-kids', '2026-09-01', 109234, NULL, NULL),
 -- Analyst (19 rows)
 ('analyst', '2024-12-01', 79616,  'deposit',    79616),
 ('analyst', '2025-01-01', 79916,  NULL, NULL),
@@ -61,4 +64,4 @@ INSERT INTO entries (fund_id, date, price, note, flow) VALUES
 ('analyst', '2026-03-01', 182156, NULL, NULL),
 ('analyst', '2026-04-01', 174452, NULL, NULL),
 ('analyst', '2026-05-01', 189702, NULL, NULL),
-('analyst', '2026-06-01', 0,      'withdrawal', -189702);
+('analyst', '2026-09-01', 193056, NULL, NULL);

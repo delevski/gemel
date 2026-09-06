@@ -163,7 +163,7 @@ function inflateFallbackFund(def) {
     series.push(row);
   });
 
-  const summary = { ...computeSummary(buildSeries(series)), ...(def.summary || {}) };
+  const summary = computeSummary(buildSeries(series));
   return {
     id: def.id,
     name: def.name,
@@ -175,10 +175,8 @@ function inflateFallbackFund(def) {
   };
 }
 
-function inflateFallbackPortfolio(funds, summary = {}) {
-  const built = buildPortfolio(funds);
-  built.summary = { ...built.summary, ...summary };
-  return built;
+function inflateFallbackPortfolio(funds, _summary = {}) {
+  return buildPortfolio(funds);
 }
 
 const GEMEL_FALLBACK = {
@@ -212,6 +210,7 @@ const GEMEL_FALLBACK = {
         { date: "2026-06-01", pct: 0.033646742408730335 },
         { date: "2026-07-01", pct: -0.02568783762802429 },
         { date: "2026-08-01", pct: -0.00436982867365134 },
+        { date: "2026-09-01", pct: 0.018472525774333892 },
       ],
       summary: {
         isClosed: false,
@@ -260,6 +259,7 @@ const GEMEL_FALLBACK = {
         { date: "2026-06-01", pct: 0.03207254027238937 },
         { date: "2026-07-01", pct: -0.02252779660718529 },
         { date: "2026-08-01", pct: -0.002982855832039329 },
+        { date: "2026-09-01", pct: 0.025590995727306387 },
       ],
       summary: {
         isClosed: false,
@@ -308,6 +308,7 @@ const GEMEL_FALLBACK = {
         { date: "2026-06-01", pct: 0.04012609250297827 },
         { date: "2026-07-01", pct: -0.026166414952816353 },
         { date: "2026-08-01", pct: -0.014487594915624348 },
+        { date: "2026-09-01", pct: 0.019480690933478373 },
       ],
       summary: {
         isClosed: false,
@@ -339,6 +340,7 @@ const GEMEL_FALLBACK = {
       timeline: [
         { date: "2026-07-01", pct: -0.022536371122701016 },
         { date: "2026-08-01", pct: -0.0029767755342750016 },
+        { date: "2026-09-01", pct: 0.02558469237341443 },
       ],
       summary: {
         isClosed: false,
